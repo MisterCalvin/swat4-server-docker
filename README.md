@@ -76,7 +76,7 @@ SWAT 4 requires Base Port + 3 (Default port is 10480, so 10480-10483/udp)
 ## Notes / Bugs
 - I tested this to the best of my abilities, however SWAT 4 is a buggy game and I am sure there are some I missed. If you have any problems feel free to [open a new issue](https://github.com/MisterCalvin/swat4-server-docker/issues).
 
-- Unfortunately, the container is running as the root user. Not only is this poor practice for Docker in general, but it is also highly advised against while using Wine. I spent a couple days trying to figure out why I cannot launch the server as a less restricted user (it is currently due to an issue with the X server), but was not successful. I may return to this in the future and attempt to fix it, but for the time being please be aware of the [risks](https://wiki.winehq.org/FAQ#:~:text=NEVER%20run%20Wine%20as%20root,wine%20folder%20in%20the%20process.).
+- Unfortunately, the container is running as the root user. Not only is this poor practice for Docker in general, but it is also highly advised against while using Wine. I spent a couple days trying to figure out why I cannot launch the server as a less restricted user (it is currently due to an issue with the X server), but was not successful. While the probability of something malicious escaping the container and infecting the host is substantially small please be aware of the [risks](https://wiki.winehq.org/FAQ#:~:text=NEVER%20run%20Wine%20as%20root,wine%20folder%20in%20the%20process.).
 
 - Mods are supported, however they will not respect the `ADMIN_PASSWORD` env variable. For setting up in-game administration on a server running a mod you will need to consult with the developers documentation.
 
