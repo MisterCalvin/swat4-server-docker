@@ -93,7 +93,7 @@ SWAT 4 requires Base Port + 3 (Default port is 10480, so 10480-10483/udp)
 | 11-99 Enhancement 	| [1.3](https://www.moddb.com/mods/11-99-enhancement-mod/downloads/11-99-enhancement-mod-v13)		|
 
 ## Building
-If you intend to build the Dockerfile yourself, I have not pinned the packages as Alpine does not keep old packages. At the time of writing (2023/07/05) I have built and tested the container with the following package versions:
+If you intend to build the Dockerfile yourself, I have not pinned the packages as Alpine does not keep old packages. At the time of writing (2023/07/07) I have built and tested the container with the following package versions:
 
 | Package   			  | Version  	   |
 |-------------------|--------------|
