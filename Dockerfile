@@ -2,8 +2,8 @@ FROM i386/alpine
 
 ENV \
   WINEDEBUG="-all" \
-	WINEARCH="win32" \
-	WINEPREFIX="/root/.wine/" \
+  WINEARCH="win32" \
+  WINEPREFIX="/root/.wine/" \
   CONTENT_VERSION="SWAT4" \
   SERVER_NAME="A SWAT4 Docker Server" \
   SERVER_PASSWORD="" \
