@@ -23,7 +23,6 @@ RUN apk add --no-cache \
 	'xvfb-run' \
 	'findutils' \
 	'tini' \
-	'sudo' \
 	'wget' && \
 	mkdir /tmp/SWAT4 /tmp/TSS && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll --no-hsts -O /tmp/SWAT4/Engine.dll --user-agent=Mozilla --content-disposition -E -c "https://raw.githubusercontent.com/sergeii/swat-patches/master/swat4stats-masterserver/1.1/Engine.dll" && \
