@@ -19,6 +19,8 @@ services:
     image: ghcr.io/mistercalvin/swat4-server-docker:latest
     container_name: swat4-server-docker
     environment:
+      - "PUID=1000" # Optional: Set the UID for the user inside the container; Default: 1000
+      - "PGID=1000" # Optional: Set the GID for the user inside the container; Default: 1000
       - "CONTENT_VERSION=SWAT4" # Required: Choose SWAT4, TSS, or enter the name of your mod folder (case-sensitive); Default: SWAT4
       - "SERVER_NAME=A SWAT4 Docker Server" # Required: Name of the Server; Default: A SWAT4 Docker Server
       - "SERVER_PASSWORD=" # Optional: Password for the Server (alphanumeric characters only); Default: unset
@@ -33,7 +35,7 @@ services:
       - "MP_MISSION_READY_TIME=90" # Optional: Time (in seconds) for players to ready themselves in between rounds in a MP game; Default: 90
       - "POST_GAME_TIME_LIMIT=15" # Optional: Time (in seconds) between the end of the round and server loading the next level; Default: 15
     volumes:
-      - /path/to/your/gamefiles/:/swat4
+      - /path/to/your/gamefiles/:/container/swat4
     ports:
       - 10480-10483:10480-10483/udp
     restart: unless-stopped
@@ -44,6 +46,8 @@ services:
 ```
 docker run -d \
   --name=swat4-server-docker \
+  -e PUID="1000" \
+  -E PGID="1000" \
   -e CONTENT_VERSION="SWAT4" \
   -e SERVER_NAME="A SWAT 4 Docker Server" \
   -e SERVER_PASSWORD="" \
@@ -58,7 +62,7 @@ docker run -d \
   -e MP_MISSION_READY_TIME="90" \
   -e POST_GAME_TIME_LIMIT="15" \
   -p 10480-10483:10480-10483/udp \
-  -v /path/to/gamefiles/:/swat4 \
+  -v /path/to/gamefiles/:/container/swat4 \
   --restart unless-stopped \
   ghcr.io/mistercalvin/swat4-server-docker:latest
 ```
@@ -73,10 +77,13 @@ SWAT 4 requires Base Port + 3 (Default port is 10480, so 10480-10483/udp)
 |        	| 10482/udp|
 |       	| 10483/udp|
 
+## User / Group Identifiers
+Taking a page from linuxserver.io's book, I have adapted the container to allow for configurable UID & GID mapping. If you would like to know more, please see [their page](https://docs.linuxserver.io/general/understanding-puid-and-pgid) on the topic. If you are unsure of what this is I recommend leaving `PUID` and `PGID` at their default values of `1000`.
+
+Please note this does not change file permissions on the mounted volume (`/container/swat4`), it only changes the default container users (`wine`) UID/GID to the specified value. Make sure proper permissions are applied to the game files directory on the host (SWAT4 in particular requires write permissions to create a log file and a blank Running.ini to the `/System` folder at runtime).
+
 ## Notes / Bugs
 - I tested this to the best of my abilities, however SWAT 4 is a buggy game and I am sure there are some I missed. If you have any problems feel free to [open a new issue](https://github.com/MisterCalvin/swat4-server-docker/issues).
-
-- <del>Unfortunately, the container is running as the root user. Not only is this poor practice for Docker in general, but it is also highly advised against while using Wine. I spent a couple days trying to figure out why I cannot launch the server as a less restricted user (it is currently due to an issue with the X server), but was not successful. While the probability of something malicious escaping the container and infecting the host is substantially small please be aware of the [risks](https://wiki.winehq.org/FAQ#:~:text=NEVER%20run%20Wine%20as%20root,wine%20folder%20in%20the%20process.).</del> This was caused by a permissions issue on my host machine, I will be updating the repo with a fix later today.
 
 - Mods are supported, however they will not respect the `ADMIN_PASSWORD` env variable. For setting up in-game administration on a server running a mod you will need to consult with the developers documentation.
 
@@ -93,13 +100,14 @@ SWAT 4 requires Base Port + 3 (Default port is 10480, so 10480-10483/udp)
 | 11-99 Enhancement 	| [1.3](https://www.moddb.com/mods/11-99-enhancement-mod/downloads/11-99-enhancement-mod-v13)		|
 
 ## Building
-If you intend to build the Dockerfile yourself, I have not pinned the packages as Alpine does not keep old packages. At the time of writing (2023/07/07) I have built and tested the container with the following package versions:
+If you intend to build the Dockerfile yourself, I have not pinned the packages as Alpine does not keep old packages. At the time of writing (2023/07/11) I have built and tested the container with the following package versions:
 
-| Package   			  | Version  	   |
-|-------------------|--------------|
-| i386/alpine			  | 3.18.2     	   |
-| wine     				  | 8.11-r0	     |
-| xvfb-run      		| 1.20.10.3-r1 |
-| findutils      		| 4.9.0-r5	   |
-| wget					    | 1.21.4-r0	   |
-| tini              | 0.19.0-r2    |
+| Package   			  | Version  	 |
+|-------------------------|--------------|
+| i386/alpine			  | 3.18.2     	 |
+| wine     				  | 8.12-r0	     |
+| xvfb-run      		  | 1.20.10.3-r0 |
+| findutils      		  | 4.9.0-r5	 |
+| shadow                  | 4.13-r4      |
+| wget					  | 1.21.4-r0	 |
+| s6-overlay              | 3.1.5.0      |
