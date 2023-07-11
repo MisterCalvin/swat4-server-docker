@@ -4,6 +4,8 @@ services:
     image: ghcr.io/mistercalvin/swat4-server-docker:latest
     container_name: swat4-server-docker
     environment:
+      - "PUID=1000" # Optional: Set the UID for the user inside the container; Default: 1000
+      - "PGID=1000" # Optional: Set the GID for the user inside the container; Default: 1000
       - "CONTENT_VERSION=SWAT4" # Required: Choose SWAT4, TSS, or enter the name of your mod folder (case-sensitive); Default: SWAT4
       - "SERVER_NAME=A SWAT4 Docker Server" # Required: Name of the Server; Default: A SWAT4 Docker Server
       - "SERVER_PASSWORD=" # Optional: Password for the Server (alphanumeric characters only); Default: unset
