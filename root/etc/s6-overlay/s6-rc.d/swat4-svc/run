@@ -1,0 +1,3 @@
+#!/command/execlineb -P
+s6-setuidgid wine 
+"/usr/bin/swat4.sh"

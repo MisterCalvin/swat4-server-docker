@@ -1,0 +1,14 @@
+#!/command/with-contenv sh
+
+PUID=${PUID:-1000}
+PGID=${PGID:-1000}
+
+if [ ! "$PUID" = "1000" ] || [ ! "$PGID" = "1000" ]; then
+    	echo "New UID/GID specified, modifying current container user"
+	echo "Please note - this does not change file permissions on the mounted volume! This will only chown /container and /container/.wine to the specified UID/GID"
+	echo "If the server is crashing or refusing to boot, check file permissions on the host mount!"
+	groupmod --gid "$PGID" wine
+    	usermod --uid "$PUID" --gid "$PGID" wine
+	chown "$PUID:$PGID" /container 
+	chown -R "$PUID:$PGID" /container/.wine
+fi
