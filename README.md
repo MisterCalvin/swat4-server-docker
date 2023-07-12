@@ -83,7 +83,7 @@ Taking a page from linuxserver.io's book, I have adapted the container to allow 
 Please note this does not change file permissions on the mounted volume (`/container/swat4`), it only changes the default container users (`wine`) UID/GID to the specified value. Make sure proper permissions are applied to the game files directory on the host (SWAT4 in particular requires write permissions to create a log file and a blank Running.ini to the `/System` folder at runtime).
 
 ## Notes / Bugs
-- I tested this to the best of my abilities, however SWAT 4 is a buggy game and I am sure there are some I missed. If you have any problems feel free to [open a new issue](https://github.com/MisterCalvin/swat4-server-docker/issues).
+- I tested this to the best of my abilities, however SWAT 4 is a buggy game and I am sure there are some things I missed. If you have any problems feel free to [open a new issue](https://github.com/MisterCalvin/swat4-server-docker/issues).
 
 - Mods are supported, however they will not respect the `ADMIN_PASSWORD` env variable. For setting up in-game administration on a server running a mod you will need to consult with the developers documentation.
 
