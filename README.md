@@ -1,5 +1,5 @@
 # SWAT 4 Dedicated Server in Docker
-A Docker container running SWAT 4 under Wine, built on Alpine. This container supports mods, see the docker compose or docker cli commands below for information on how to enable them. Your game directory (mounted in the container as `/container/swat4`) should be structured as follows:
+A Docker container running a SWAT 4 Dedicated Server under Wine, built on Alpine. This container supports mods, see the docker compose or docker cli commands below for information on how to enable them. Your game directory (mounted in the container as `/container/swat4`) should be structured as follows:
 
     .
     ├── ...
