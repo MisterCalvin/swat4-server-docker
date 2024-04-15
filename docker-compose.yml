@@ -20,7 +20,7 @@ services:
       - "MP_MISSION_READY_TIME=90" # Optional: Time (in seconds) for players to ready themselves in between rounds in a MP game; Default: 90
       - "POST_GAME_TIME_LIMIT=15" # Optional: Time (in seconds) between the end of the round and server loading the next level; Default: 15
     volumes:
-      - /path/to/your/gamefiles/:/swat4
+      - /path/to/your/gamefiles/:/container/swat4
     ports:
       - 10480-10483:10480-10483/udp
     restart: unless-stopped
