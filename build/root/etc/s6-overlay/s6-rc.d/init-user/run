@@ -1,4 +1,4 @@
-#!/command/with-contenv sh
+#!/command/with-contenv bash
 
 PUID=${PUID:-1000}
 PGID=${PGID:-1000}
@@ -10,5 +10,12 @@ if [ ! "$PUID" = "1000" ] || [ ! "$PGID" = "1000" ]; then
 	groupmod --gid "$PGID" wine
     	usermod --uid "$PUID" --gid "$PGID" wine
 	chown "$PUID:$PGID" /container 
-	chown -R "$PUID:$PGID" /container/.wine
 fi
+
+if [ -z "$(ls -A /container/.wine)" ]; then
+	printf "true" > /var/run/s6/container_environment/FIRST_RUN
+else
+	printf "false" > /var/run/s6/container_environment/FIRST_RUN
+fi
+
+chown -R $PUID:$PGID /container/.wine
