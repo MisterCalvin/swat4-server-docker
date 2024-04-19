@@ -197,14 +197,18 @@ if [ -f "$SERVER_BINARY.log" ]; then
 	mv "$SERVER_BINARY.log" "$SERVER_BINARY.old.log"
 fi
 
-if [ "${FIRST_RUN:-true}" = "true" ]; then
-        echo "Starting $CONTENT_VERSION Server for the first time, it may take between 1-2 minutes before you see any logs. Please be patient, this should be quicker on subsequent runs."
-else
-        echo "Starting $CONTENT_VERSION Server, it may take up to 30 seconds before you see any logs"
-fi
+echo -e "███████╗██╗    ██╗ █████╗ ████████╗    ██╗  ██╗"
+echo "██╔════╝██║    ██║██╔══██╗╚══██╔══╝    ██║  ██║"
+echo "███████╗██║ █╗ ██║███████║   ██║       ███████║"
+echo "╚════██║██║███╗██║██╔══██║   ██║       ╚════██║"
+echo "███████║╚███╔███╔╝██║  ██║   ██║            ██║"
+echo "╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝            ╚═╝"
+echo "A Docker container by MisterCalvin | discord.sbotnas.io"
+
+echo "Starting $CONTENT_VERSION Server, it may take up to 30 seconds before you see any logs"
 
 if [ "$CONTAINER_DEBUG" = "1" ]; then
-	xvfb-run wine "$GAMEDIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" & tail -F "$SERVER_BINARY.log" 2> /dev/null
+	xvfb-run wine "$GAME_DIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" & tail -F "$SERVER_BINARY.log" 2> /dev/null
 else
 	wine_wrapper.sh "$GAME_DIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" &> /dev/null & tail -F "$SERVER_BINARY.log" 2> /dev/null
 fi

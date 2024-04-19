@@ -12,10 +12,4 @@ if [ ! "$PUID" = "1000" ] || [ ! "$PGID" = "1000" ]; then
 	chown "$PUID:$PGID" /container 
 fi
 
-if [ -z "$(ls -A /container/.wine)" ]; then
-	printf "true" > /var/run/s6/container_environment/FIRST_RUN
-else
-	printf "false" > /var/run/s6/container_environment/FIRST_RUN
-fi
-
 chown -R $PUID:$PGID /container/.wine

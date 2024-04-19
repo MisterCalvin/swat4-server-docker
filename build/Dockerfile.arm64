@@ -27,6 +27,7 @@ ENV \
   PUID="1000" \
   PGID="1000" \
   S6_VERBOSITY="0" \
+  S6_CMD_WAIT_FOR_SERVICES_MAXTIME="0" \
   CONTAINER_DEBUG="0"
 
 RUN apk add --no-cache 'xvfb-run' \ 

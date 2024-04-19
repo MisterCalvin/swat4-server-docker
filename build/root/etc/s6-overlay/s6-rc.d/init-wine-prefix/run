@@ -1,0 +1,6 @@
+#!/command/with-contenv bash
+
+if [ -z "$(ls -A /container/.wine)" ]; then
+	echo "Generating Wine prefix, it may take between 1-2 minutes before the server boots. Please be patient, this should be quicker on subsequent runs."
+	wineboot -i
+fi
