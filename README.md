@@ -117,7 +117,7 @@ You can specify the UID & GID for the user (app) inside the container, see <a hr
 Please note this does not change file permissions on the mounted volume (`/container/swat4`), it only changes the default container users (`wine`) UID/GID to the specified value. Make sure proper permissions are applied to the game files directory on the host (SWAT 4 in particular requires write permissions to create a log file and a blank Running.ini to the `/System` folder at runtime).
 
 ## Notes / Bugs
-- I tested this to the best of my abilities, however SWAT 4 is a buggy game and I am sure there are some things I missed. If you have any problems feel free to [open a new issue](https://git.sbotnas.io/kevin/swat4-server-docker/issues).
+- I tested this to the best of my abilities, however SWAT 4 is a buggy game and I am sure there are some things I missed. If you have any problems feel free to [open a new issue](issues).
 
 - Mods are supported, however they will not respect the `ADMIN_PASSWORD` env variable. For setting up in-game administration on a server running a mod you will need to consult with the developers documentation.
 
@@ -149,4 +149,4 @@ If you intend to build the Dockerfile yourself, I have not pinned the packages a
 
 
 ## ARM64 Support
-This container has been adapted for use on ARM64 processor by utilizing the project <a href="https://github.com/AndreRH/hangover" target="_blank">AndreRH/hangover</a>. ARM64 support is experimental and was only tested on a Raspberry Pi 4, you may experience additional bugs.
+This container has been adapted for use on ARM64 processors by utilizing the project <a href="https://github.com/AndreRH/hangover" target="_blank">AndreRH/hangover</a>. ARM64 support is experimental and was only tested on a Raspberry Pi 4, you may experience additional bugs.
