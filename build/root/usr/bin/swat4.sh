@@ -203,4 +203,8 @@ else
         echo "Starting $CONTENT_VERSION Server, it may take up to 30 seconds before you see any logs"
 fi
 
-wine_wrapper.sh "$GAME_DIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" &> /dev/null & tail -F "$SERVER_BINARY.log" 2> /dev/null
+if [ "$CONTAINER_DEBUG" = "1" ]; then
+	xvfb-run wine "$GAMEDIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" & tail -F "$SERVER_BINARY.log" 2> /dev/null
+else
+	wine_wrapper.sh "$GAME_DIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" &> /dev/null & tail -F "$SERVER_BINARY.log" 2> /dev/null
+fi

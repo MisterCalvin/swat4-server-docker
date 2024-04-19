@@ -26,7 +26,8 @@ ENV \
   ADDITIONAL_ARGS="" \
   PUID="1000" \
   PGID="1000" \
-  S6_VERBOSITY="0"
+  S6_VERBOSITY="0" \
+  CONTAINER_DEBUG="0"
 
 RUN apk add --no-cache 'xvfb-run' \ 
 	'findutils' \ 

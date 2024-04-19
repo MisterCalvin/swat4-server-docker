@@ -7,4 +7,4 @@
 
 # A minor annoyance, this is to filter out unwanted messages on arm64 machines
 # Included with x86_64 as well since it will not hurt anything and I don't want to duplicate swat4.sh
-xvfb-run wine "$@" 2>&1 | grep -v -e "starting Box64 based box64cpu.dll" -e "Hangover currently has issues with some ACM modules, disabling" 
+wine_wrapper.sh "$GAME_DIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" &> /dev/null & tail -F "$SERVER_BINARY.log" 2> /dev/null
