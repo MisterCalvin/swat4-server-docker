@@ -4,6 +4,7 @@ ARG S6_OVERLAY_VERSION=3.1.6.2
 ARG ARCH=x86_64
 
 ENV \
+  HOME=/container \
   WINEDEBUG="-all" \
   WINEARCH="win32" \
   WINEPREFIX="/container/.wine/" \
@@ -31,6 +32,7 @@ RUN apk add --no-cache \
 	'xvfb-run' \
 	'findutils' \
 	'shadow' \
+	'bash' \
 	'wget' && \
 	mkdir /tmp/SWAT4 /tmp/TSS /tmp/build/ && \
 	wget -q -nc --show-progress --progress=bar:force:noscroll --no-hsts -O /tmp/SWAT4/Engine.dll --user-agent=Mozilla --content-disposition -E -c "https://raw.githubusercontent.com/sergeii/swat-patches/master/swat4stats-masterserver/1.1/Engine.dll" && \
@@ -42,6 +44,7 @@ RUN apk add --no-cache \
 	rm -rf /tmp/build/ && \
 	apk --purge del wget && \
 	mkdir -m 760 /container && \
+	wineboot -i && \
 	addgroup --gid $PGID wine && \
 	adduser --uid $PUID --home /container --disabled-password --no-create-home --shell /bin/false --ingroup wine wine && \
 	chown -R wine:wine /container
