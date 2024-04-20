@@ -36,7 +36,7 @@ services:
       QUICK_ROUND_RESET: False # Optional: If true, the server will perform a quick reset in between rounds on the same map, if false, the server will do a full SwitchLevel between rounds; Default: False
       ADDITIONAL_ARGS: # Optional: Comma-separated list of additional arguments to modify; Default: unset
     volumes: 
-      - /path/to/your/gamefile:/container/swat4
+      - /path/to/your/gamefiles:/container/swat4
       - swat4-wine:/container/.wine
     ports: 
       - 10480-10483:10480-10483/udp
