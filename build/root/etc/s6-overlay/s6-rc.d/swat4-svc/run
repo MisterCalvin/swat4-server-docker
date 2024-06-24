@@ -1,3 +1,2 @@
-#!/command/execlineb -P
-s6-setuidgid wine 
-"/usr/bin/swat4.sh"
+#!/bin/sh
+exec simple_logger -l "/container/swat4/swat4-container.log" "swat4-server" "true" s6-setuidgid wine /usr/bin/swat4_startup.sh 2>&1

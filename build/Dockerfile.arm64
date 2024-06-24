@@ -1,4 +1,14 @@
-FROM arm64v8/alpine
+FROM arm64v8/alpine as builder
+RUN apk add --no-cache gcc musl-dev pcre-dev
+COPY ./simple_logger.c /src/
+WORKDIR /src
+RUN gcc -o simple_logger simple_logger.c /usr/lib/libpcre.a -static
+
+FROM --platform=aarch64 arm64v8/alpine
+
+ARG CONTAINER_MAJOR_VERSION=1
+ARG CONTAINER_MINOR_VERSION=1
+ARG CONTAINER_PATCH=1
 
 ARG S6_OVERLAY_VERSION=3.1.6.2
 ARG ARCH=aarch64
@@ -28,12 +38,15 @@ ENV \
   PGID="1000" \
   S6_VERBOSITY="0" \
   S6_CMD_WAIT_FOR_SERVICES_MAXTIME="0" \
-  CONTAINER_DEBUG="0"
+  CONTAINER_DEBUG="0" \
+  TZ=""
 
 RUN apk add --no-cache 'xvfb-run' \ 
 	'findutils' \ 
 	'shadow' \
 	'bash' \
+  'tzdata' \
+	'figlet' \
 	'dpkg' \
 	'wget' && \
 	apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing hangover-wine && \
@@ -52,11 +65,14 @@ RUN apk add --no-cache 'xvfb-run' \
 	mkdir -m 760 /container && \
 	addgroup --gid $PGID wine && \
 	adduser --uid $PUID --home /container --disabled-password --no-create-home --shell /bin/false --ingroup wine wine && \
+        touch /container/.CONTAINER_VERSION && \
+        echo "${CONTAINER_MAJOR_VERSION}.${CONTAINER_MINOR_VERSION}.${CONTAINER_PATCH}" > /container/.CONTAINER_VERSION && \
 	chown -R wine:wine /container
 
 WORKDIR /container/swat4
 
 COPY	./root /
+COPY --from=builder /src/simple_logger /usr/local/bin/simple_logger
 
 EXPOSE 10480-10483/udp
 
@@ -67,5 +83,5 @@ LABEL \
   org.opencontainers.image.title="SWAT 4 Docker" \
   org.opencontainers.image.description="Docker container for running a SWAT 4 Dedicated Server" \
   org.opencontainers.image.source=https://github.com/MisterCalvin/swat4-server-docker \
-  org.opencontainers.image.version="1.1" \
+  org.opencontainers.image.version="${CONTAINER_MAJOR_VERSION}.${CONTAINER_MINOR_VERSION}.${CONTAINER_PATCH}" \
   org.opencontainers.image.licenses=MIT

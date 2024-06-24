@@ -1,1 +1,1 @@
-/etc/s6-overlay/s6-rc.d/init-user/run
+exec simple_logger -l "/container/swat4/swat4-container.log" "init-user" "true" /etc/s6-overlay/s6-rc.d/init-user/run 2>&1

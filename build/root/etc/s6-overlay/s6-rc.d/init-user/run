@@ -1,15 +1,29 @@
 #!/command/with-contenv bash
 
-PUID=${PUID:-1000}
-PGID=${PGID:-1000}
+source /usr/bin/debug.sh
+
+check_and_chown() {
+    local dir=$1
+    local uid=$(stat -c "%u" $dir)
+    local gid=$(stat -c "%g" $dir)
+
+    if [ "$uid" != "$PUID" ] || [ "$gid" != "$PGID" ]; then
+        echo "Changing ownership of $dir to $PUID:$PGID"
+        chown -R "$PUID:$PGID" $dir
+    fi
+}
 
 if [ ! "$PUID" = "1000" ] || [ ! "$PGID" = "1000" ]; then
-    	echo "New UID/GID specified, modifying current container user"
-	echo "Please note - this does not change file permissions on the mounted volume! This will only chown /container and /container/.wine to the specified UID/GID"
-	echo "If the server is crashing or refusing to boot, check file permissions on the host mount!"
-	groupmod --gid "$PGID" wine
-    	usermod --uid "$PUID" --gid "$PGID" wine
-	chown "$PUID:$PGID" /container 
+    echo "New UID/GID specified, modifying current container user"
+    echo "This will change file permissions on the mounted volume!"
+    groupmod --gid "$PGID" wine
+    usermod --uid "$PUID" --gid "$PGID" wine
+
+    # Ensure the root container directory is owned by wine user
+    chown "$PUID:$PGID" /container
 fi
 
-chown -R $PUID:$PGID /container/.wine
+# Check and change ownership recursively if necessary
+check_and_chown "/container"
+check_and_chown "/container/swat4"
+check_and_chown "/container/.wine"

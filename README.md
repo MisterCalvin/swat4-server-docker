@@ -18,6 +18,7 @@ services:
     image: ghcr.io/mistercalvin/swat4-server-docker:latest
     container_name: swat4-server-docker
     environment: 
+      TZ: America/New_York
       PUID: 1000 # Optional: Set the UID for the user inside the container; Default: 1000
       PGID: 1000 # Optional: Set the GID for the user inside the container; Default: 1000
       CONTENT_VERSION: SWAT4 # Required: Choose SWAT4, TSS, or enter the name of your mod folder (case-sensitive); Default: SWAT4
@@ -36,7 +37,7 @@ services:
       QUICK_ROUND_RESET: False # Optional: If true, the server will perform a quick reset in between rounds on the same map, if false, the server will do a full SwitchLevel between rounds; Default: False
       ADDITIONAL_ARGS: # Optional: Comma-separated list of additional arguments to modify; Default: unset
     volumes: 
-      - /path/to/your/gamefiles:/container/swat4
+      - /path/to/your/gamefile:/container/swat4
       - swat4-wine:/container/.wine
     ports: 
       - 10480-10483:10480-10483/udp
@@ -55,6 +56,7 @@ docker run -d \
   --name=swat4-server-docker \
   -e PUID="1000" \
   -e PGID="1000" \
+  -e TZ="America/New_York" \
   -e CONTENT_VERSION="SWAT4" \
   -e SERVER_NAME="A SWAT 4 Docker Server" \
   -e SERVER_PASSWORD="" \
@@ -74,7 +76,7 @@ docker run -d \
   -v /path/to/gamefiles/:/container/swat4 \
   -v swat4-wine:/container/.wine \
   --restart unless-stopped \
-  git.sbotnas.io/kevin/swat4-server-docker:latest
+  ghcr.io/mistercalvin/swat4-server-docker:latest
 ```
   
 ## Server Ports
@@ -105,7 +107,9 @@ SERVER_NAME="[c=0000ff][u][b]A SWAT 4 Docker Server[\u][\b]"
 #### Using ADDITIONAL_ARGS
 Most common options such as Server name, password, admin password, etc., have been exposed as environment variables for convenience. If you would like to modify an option not exposed, you can use ADDITIONAL_ARGS. For example, if you wanted to disable showing teammate names and disable respawns, you would add the following to your docker-compose.yml or docker run command:
 
-> ADDITIONAL_ARGS="bShowTeammateNames=False,bNoRespawn=True"
+```
+ADDITIONAL_ARGS="bShowTeammateNames=False,bNoRespawn=True"
+```
 
 For a list other options, take a look at your `SwatGUIState.ini`, located in `GAME_DIR/System/`.  
 
@@ -134,19 +138,21 @@ Please note this does not change file permissions on the mounted volume (`/conta
 | 11-99 Enhancement 	| <a href="https://www.moddb.com/mods/11-99-enhancement-mod/downloads/11-99-enhancement-mod-v13" target="_blank">1.3</a>		|
 
 ## Building
-If you intend to build the Dockerfile yourself, I have not pinned the packages as Alpine does not keep old packages. At the time of writing (2024/04/18) I have built and tested the container with the following package versions:
+If you intend to build the Dockerfile yourself, I have not pinned the packages as Alpine does not keep old packages. At the time of writing (2024/06/24) I have built and tested the container with the following package versions:
 
-| Package   			  | Version  	 |
-|-------------------------|--------------|
-| i386/alpine		  | 3.19.1     	 |
-| wine (**x86_64 only**)     				  | 9.0-r0	     |
-| hangover-wine (**arm64 only**)     				  | 9.5-r0	     |
-| xvfb-run      		  | 1.20.10.3-r1 |
-| findutils      		  | 4.9.0-r5	 |
-| shadow                  | 4.14.2-r0      |
-| wget					  | 1.24.5-r0	 |
-| s6-overlay              | 3.1.6.2      |
-
+| Package   			               | Version      |
+| ------------------------------ | ------------ |
+| alpine                         | 3.20.1       |
+| wine (**i386 only**)           | 9.0-r0       |
+| hangover-wine (**arm64 only**) | 9.5-r0       |
+| bash                           | 5.2.26-r0    |
+| tzdata                         | 2024a-r1     |
+| shadow                         | 4.15.1-r0    |
+| wget                           | 1.36.1       |
+| figlet                         | 2.2.5-r3     |
+| xvfb-run                       | 1.20.10.3-r2 |
+| findutils                      | 4.9.0-r5     |
+| s6-overlay                     | 3.1.6.2      |
 
 ## ARM64 Support
 This container has been adapted for use on ARM64 processors by utilizing the project <a href="https://github.com/AndreRH/hangover" target="_blank">AndreRH/hangover</a>. ARM64 support is experimental and was only tested on a Raspberry Pi 4, you may experience additional bugs.

@@ -1,0 +1,7 @@
+#!/command/with-contenv bash
+
+source /usr/bin/debug.sh
+
+echo -e ""
+figlet -f ansi_shadow.flf "SWAT4"
+echo "A Docker container by MisterCalvin (v$(cat "/container/.CONTAINER_VERSION")) | discord.sbotnas.io"

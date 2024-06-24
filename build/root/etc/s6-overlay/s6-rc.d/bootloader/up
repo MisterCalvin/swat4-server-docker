@@ -1,0 +1,1 @@
+exec simple_logger -o -l "/container/swat4/swat4-container.log" "bootloader" "false" /etc/s6-overlay/s6-rc.d/bootloader/run 2>&1
