@@ -1,10 +1,8 @@
 #!/command/with-contenv bash
 
+source /usr/bin/debug.sh
+
 if [ -z "$(ls -A /container/.wine)" ]; then
-        echo "Generating Wine prefix, it may take between 1-2 minutes before the server boots. Please be patient, this should be quicker on subsequent runs."
-        if [[ "$CONTAINER_DEBUG" -eq 1 ]]; then
-            wineboot -i 2>&1
-        else
-            wineboot -i 2>&1 | grep -v -e "starting Box64 based box64cpu.dll" -e "Hangover currently has issues with some ACM modules, disabling"
-        fi
+        echo "Initializing wine prefix, this may take a minute or two on slower systems. Be patient, this will be quicker on subsequent runs."
+	wineboot -u 2>&1
 fi

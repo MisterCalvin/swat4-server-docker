@@ -1,16 +1,19 @@
 #!/command/with-contenv bash
-## File: SWAT 4 Docker Script - swat4.sh
+## File: SWAT 4 Docker Script - swat4_startup.sh
 ## Author: Kevin Moore <admin@sbotnas.io>
 ## Created: 2023/07/11
-## Modified: 2024/04/17
+## Modified: 2024/05/13
 ## License: MIT License
+exec 2>&1
+source /usr/bin/debug.sh
+
 GAME_DIR=/container/swat4
 NEW_SWAT4_ENGINEDLL=$(md5sum < /tmp/SWAT4/Engine.dll)
 NEW_TSS_ENGINEDLL=$(md5sum < /tmp/TSS/Engine.dll)
 OLD_SWAT4_ENGINEDLL=$(md5sum < "$GAME_DIR/Content/System/Engine.dll")
 OLD_TSS_ENGINEDLL=$(md5sum < "$GAME_DIR/ContentExpansion/System/Engine.dll")
 
-case $(echo "$CONTENT_VERSION" | tr '[:lower:]' '[:upper:]') in
+case "${CONTENT_VERSION}" in
 	"SWAT4"|0)
     	CONTENT_PATH=Content
         CONTENT_VERSION="SWAT 4"
@@ -24,7 +27,8 @@ case $(echo "$CONTENT_VERSION" | tr '[:lower:]' '[:upper:]') in
 
 	"$CONTENT_VERSION")
 	CONTENT_PATH=$CONTENT_VERSION
-	MOD_SYSTEM_FOLDER=$(find "$GAME_DIR/$CONTENT_VERSION" -type d -name System) 2> /dev/null || { echo "Cannot find Mod folder $GAME_DIR/$CONTENT_VERSION! Check that it exists, and that CONTENT_VERSION is set correctly!"; exit 1; }
+    echo "Content Path is: $CONTENT_PATH"
+	MOD_SYSTEM_FOLDER=$(find "$GAME_DIR/$CONTENT_PATH" -type d -name System) 2> /dev/null || { echo "Cannot find Mod folder $GAME_DIR/$CONTENT_PATH! Check that it exists, and that CONTENT_VERSION is set correctly!"; exit 1; }
 	MOD_GAME_VERSION=$(find "$MOD_SYSTEM_FOLDER" -iregex '.*Swat4X?.ini' -type f -printf "%f")
 	
 	case $MOD_GAME_VERSION in	
@@ -46,9 +50,12 @@ case $(echo "$CONTENT_VERSION" | tr '[:lower:]' '[:upper:]') in
 		;;
 esac
 
+echo "Content Path is: $CONTENT_PATH"
+echo "Content Version is: $CONTENT_VERSION"
+
 SwatGUIState=$(find "$GAME_DIR/$CONTENT_PATH/System" -type f -iname SwatGUIState.ini -printf "%f" -quit | grep .) && SwatGUIState="$GAME_DIR/$CONTENT_PATH/System/$SwatGUIState" || { echo "Cannot find $GAME_DIR/$CONTENT_VERSION/System/SwatGUIState.ini"; exit 1; }
 
-case $(echo "$GAME_TYPE" | tr '[:lower:]' '[:upper:]') in
+case "${GAME_TYPE^^}" in
     "BARRICADED SUSPECTS")
 	    GAME_TYPE=MPM_BarricadedSuspects
         sed -i "s/^GameType=.*$/GameType=$GAME_TYPE/g" "$SwatGUIState"
@@ -197,18 +204,6 @@ if [ -f "$SERVER_BINARY.log" ]; then
 	mv "$SERVER_BINARY.log" "$SERVER_BINARY.old.log"
 fi
 
-echo -e "███████╗██╗    ██╗ █████╗ ████████╗    ██╗  ██╗"
-echo "██╔════╝██║    ██║██╔══██╗╚══██╔══╝    ██║  ██║"
-echo "███████╗██║ █╗ ██║███████║   ██║       ███████║"
-echo "╚════██║██║███╗██║██╔══██║   ██║       ╚════██║"
-echo "███████║╚███╔███╔╝██║  ██║   ██║            ██║"
-echo "╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝            ╚═╝"
-echo "A Docker container by MisterCalvin | discord.sbotnas.io"
-
 echo "Starting $CONTENT_VERSION Server, it may take up to 30 seconds before you see any logs"
 
-if [ "$CONTAINER_DEBUG" = "1" ]; then
-	xvfb-run wine "$GAME_DIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" & tail -F "$SERVER_BINARY.log" 2> /dev/null
-else
-	wine_wrapper.sh "$GAME_DIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" &> /dev/null & tail -F "$SERVER_BINARY.log" 2> /dev/null
-fi
+xvfb-run wine "$GAME_DIR/${CONTENT_PATH_MOD:-$CONTENT_PATH/System/}$SERVER_BINARY.exe" "${MAPLIST[0]}" & tail -F "$SERVER_BINARY.log" 2> /dev/null

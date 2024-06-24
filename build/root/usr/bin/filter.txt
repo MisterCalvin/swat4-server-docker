@@ -1,0 +1,9 @@
+BEGIN FILTERS
+starting Box64 based box64cpu.dll
+Hangover currently has issues with some ACM modules, disabling
+END FILTERS
+
+BEGIN ANONYMIZE
+(?<=Password=)[\w[$&+,:;=?@#|'<>.^*()%!-]+(?=\/g)
+(?<=\-n\s\').+?(?=\')
+END ANONYMIZE

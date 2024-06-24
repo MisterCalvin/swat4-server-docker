@@ -1,1 +1,1 @@
-/etc/s6-overlay/s6-rc.d/init-wine-prefix/run
+exec simple_logger -l "/container/swat4/swat4-container.log" "init-wine-prefix" "false" /etc/s6-overlay/s6-rc.d/init-wine-prefix/run 2>&1
