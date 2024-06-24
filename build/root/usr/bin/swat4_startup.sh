@@ -27,7 +27,6 @@ case "${CONTENT_VERSION}" in
 
 	"$CONTENT_VERSION")
 	CONTENT_PATH=$CONTENT_VERSION
-    echo "Content Path is: $CONTENT_PATH"
 	MOD_SYSTEM_FOLDER=$(find "$GAME_DIR/$CONTENT_PATH" -type d -name System) 2> /dev/null || { echo "Cannot find Mod folder $GAME_DIR/$CONTENT_PATH! Check that it exists, and that CONTENT_VERSION is set correctly!"; exit 1; }
 	MOD_GAME_VERSION=$(find "$MOD_SYSTEM_FOLDER" -iregex '.*Swat4X?.ini' -type f -printf "%f")
 	
