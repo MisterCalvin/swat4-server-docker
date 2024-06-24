@@ -136,20 +136,20 @@ Please note this does not change file permissions on the mounted volume (`/conta
 | 11-99 Enhancement 	| <a href="https://www.moddb.com/mods/11-99-enhancement-mod/downloads/11-99-enhancement-mod-v13" target="_blank">1.3</a>		|
 
 ## Building
-If you intend to build the Dockerfile yourself, I have not pinned the packages as Alpine does not keep old packages. At the time of writing (2024/05/13) I have built and tested the container with the following package versions:
+If you intend to build the Dockerfile yourself, I have not pinned the packages as Alpine does not keep old packages. At the time of writing (2024/06/24) I have built and tested the container with the following package versions:
 
 | Package   			               | Version      |
 | ------------------------------ | ------------ |
-| alpine		                     | 3.19.1       |
-| wine (**i386 only**)     	     | 9.0-r0	      |
-| hangover-wine (**arm64 only**) | 9.5-r0	      |
-| bash                           | 5.2.21-r0    |
-| tzdata      		               | 2024a-r0	    |
-| shadow                         | 4.14.2-r0    |
-| wget					                 | 1.24.5-r0    |
+| alpine                         | 3.20.1       |
+| wine (**i386 only**)           | 9.9-r0       |
+| hangover-wine (**arm64 only**) | 9.5-r0       |
+| bash                           | 5.2.26-r0    |
+| tzdata                         | 2024a-r1     |
+| shadow                         | 4.15.1-r0    |
+| wget                           | 1.36.1       |
 | figlet                         | 2.2.5-r3     |
-| xvfb-run      		             | 1.20.10.3-r1 |
-| findutils      		             | 4.9.0-r5	    |
+| xvfb-run                       | 1.20.10.3-r2 |
+| findutils                      | 4.9.0-r5     |
 | s6-overlay                     | 3.1.6.2      |
 
 ## ARM64 Support
