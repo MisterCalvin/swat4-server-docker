@@ -107,7 +107,9 @@ SERVER_NAME="[c=0000ff][u][b]A SWAT 4 Docker Server[\u][\b]"
 #### Using ADDITIONAL_ARGS
 Most common options such as Server name, password, admin password, etc., have been exposed as environment variables for convenience. If you would like to modify an option not exposed, you can use ADDITIONAL_ARGS. For example, if you wanted to disable showing teammate names and disable respawns, you would add the following to your docker-compose.yml or docker run command:
 
-> ADDITIONAL_ARGS="bShowTeammateNames=False,bNoRespawn=True"
+```
+ADDITIONAL_ARGS="bShowTeammateNames=False,bNoRespawn=True"
+```
 
 For a list other options, take a look at your `SwatGUIState.ini`, located in `GAME_DIR/System/`.  
 
@@ -141,7 +143,7 @@ If you intend to build the Dockerfile yourself, I have not pinned the packages a
 | Package   			               | Version      |
 | ------------------------------ | ------------ |
 | alpine                         | 3.20.1       |
-| wine (**i386 only**)           | 9.9-r0       |
+| wine (**i386 only**)           | 9.0-r0       |
 | hangover-wine (**arm64 only**) | 9.5-r0       |
 | bash                           | 5.2.26-r0    |
 | tzdata                         | 2024a-r1     |

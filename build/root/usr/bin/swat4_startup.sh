@@ -50,9 +50,6 @@ case "${CONTENT_VERSION}" in
 		;;
 esac
 
-echo "Content Path is: $CONTENT_PATH"
-echo "Content Version is: $CONTENT_VERSION"
-
 SwatGUIState=$(find "$GAME_DIR/$CONTENT_PATH/System" -type f -iname SwatGUIState.ini -printf "%f" -quit | grep .) && SwatGUIState="$GAME_DIR/$CONTENT_PATH/System/$SwatGUIState" || { echo "Cannot find $GAME_DIR/$CONTENT_VERSION/System/SwatGUIState.ini"; exit 1; }
 
 case "${GAME_TYPE^^}" in
